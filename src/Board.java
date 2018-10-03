@@ -3,7 +3,7 @@ public class Board {
 	private final int COLOUMS = 3;
 	int[][] squares = new int[ROWS][COLOUMS];
 
-	Board(){
+	Board() {
 
 	}
 
@@ -11,15 +11,19 @@ public class Board {
 
 		System.out.println("Board: ");
 
-		for (int i = 0; i < ROWS; ++ i) {
-			for (int j = 0; j < COLOUMS; j++) {
-
-				System.out.print(this.squares[i][j]);
-				System.out.print( " | ");
-			}
-			System.out.println();
-
-			System.out.println( "---+---+---");
-		}
+		System.out.print(" 1 " + " | ");
+		System.out.print(" 2 " + " | ");
+		System.out.print(" 3 ");
+		System.out.println();
+		System.out.println("----+-----+----");
+		System.out.print(" 4 " + " | ");
+		System.out.print(" 5 " + " | ");
+		System.out.print(" 6 ");
+		System.out.println();
+		System.out.println("----+-----+----");
+		System.out.print(" 7 " + " | ");
+		System.out.print(" 8 " + " | ");
+		System.out.print(" 9 ");
+		System.out.println();
 	}
 }

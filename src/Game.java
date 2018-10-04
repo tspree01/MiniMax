@@ -1,6 +1,22 @@
-public class Game {
+import java.util.Random;
+import java.util.Scanner;
 
-	public static void main(String[] args){
-		new Board().printToConsole();
+public class Game {
+	private final int Rows = 3;
+	private final int Colums = 3;
+	private Scanner sc = new Scanner(System.in);
+	Board board;
+
+	public static void main(String[] args) {
+
+		new Game().run();
+	}
+
+	void run() {
+		board = new Board(Rows, Colums);
+		board.printBoard();
+		board.setupBoard();
+		//Get the user's move
+		int humansInput = sc.nextInt();
 	}
 }

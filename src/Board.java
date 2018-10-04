@@ -1,15 +1,35 @@
-public class Board {
-	private final int ROWS = 3;
-	private final int COLOUMS = 3;
-	int[][] squares = new int[ROWS][COLOUMS];
+import java.util.ArrayList;
 
-	Board() {
+public class Board {
+	private final int Rows = 3;
+	private final int Columns = 3;
+	int[][] squares = new int[Rows][Columns];
+	Board prev;
+	ArrayList<Integer> scoreList = new ArrayList<>();
+
+	Board(){
 
 	}
 
-	public void printToConsole() {
+	Board(int Rows, int Column){
+		squares = new int[Rows][Columns];
+	}
 
-		System.out.println("Board: ");
+	//copy constructor
+	public Board(Board _prev) {
+		this.prev = _prev;
+		System.arraycopy(_prev.squares,0,this.squares,0,_prev.squares.length);
+	}
+	//set all the cells to -1 which is empty
+	void setupBoard(){
+		for (int i = 0; i < Rows; i++) {
+			for (int j = 0; j < Columns; j++) {
+				squares[i][j] = -1;
+			}
+		}
+	}
+
+	public void printBoard() {
 
 		System.out.print(" 1 " + " | ");
 		System.out.print(" 2 " + " | ");
@@ -25,7 +45,10 @@ public class Board {
 		System.out.print(" 8 " + " | ");
 		System.out.print(" 9 ");
 		System.out.println();
+		System.out.print("Your Move: ");
 	}
+
+
 }
 
 

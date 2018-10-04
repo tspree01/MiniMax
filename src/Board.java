@@ -5,9 +5,8 @@ public class Board
 {
 	private final int Rows = 3;
 	private final int Columns = 3;
-	//int[][] cells = new int[Rows][Columns];
-	ArrayList<Cell[]> squares = new ArrayList<>();
-	//Cell[] cell = new Cell[Columns];
+	//ArrayList<Cell[]> squares = new ArrayList<>();
+	Cell[] squares = new Cell[9];
 	Board prev;
 	ArrayList<Integer> scoreList = new ArrayList<>();
 
@@ -25,45 +24,40 @@ public class Board
 	public Board(Board _prev)
 	{
 		this.prev = _prev;
-
 		//System.arraycopy(_prev.squares, 0, this.squares, 0, _prev.squares.length);
 	}
 
-
+	// place an X or an O where the current player selected
+	void move(int userInput, String currentPlayer){
+		this.squares[userInput-1].numberOnBoard = currentPlayer;
+	}
 
 	//set all the cells to blank
 	void setupBoard()
 	{
-		int numberOnBoard = 1;
-
-		for (int i = 0; i < Rows; i++)
+		for (int i = 0; i < squares.length; i++)
 		{
-			squares.add(new Cell[Columns]);
-			for (int j = 0; j < Columns; j++)
-			{
-
-				squares.get(i)[j] = new Cell(i, j,String.valueOf(numberOnBoard++), true);
-			}
+			squares[i] = new Cell(String.valueOf(i+1), true);
 		}
 	}
 
 	public void printBoard()
 	{
-		System.out.print(" " + squares.get(0)[0].numberOnBoard + "  | ");
-		System.out.print(" " + squares.get(0)[1].numberOnBoard + "  | ");
-		System.out.print(" " + squares.get(0)[2].numberOnBoard);
+		System.out.print(" " + squares[0].numberOnBoard + "  | ");
+		System.out.print(" " + squares[1].numberOnBoard + "  | ");
+		System.out.print(" " + squares[2].numberOnBoard);
 		System.out.println();
 		System.out.println("----+-----+----");
-		System.out.print(" " + squares.get(1)[0].numberOnBoard + "  | ");
-		System.out.print(" " + squares.get(1)[1].numberOnBoard + "  | ");
-		System.out.print(" " + squares.get(1)[2].numberOnBoard);
+		System.out.print(" " + squares[3].numberOnBoard + "  | ");
+		System.out.print(" " + squares[4].numberOnBoard + "  | ");
+		System.out.print(" " + squares[5].numberOnBoard);
 		System.out.println();
 		System.out.println("----+-----+----");
-		System.out.print(" " + squares.get(2)[0].numberOnBoard + "  | ");
-		System.out.print(" " + squares.get(2)[1].numberOnBoard + "  | ");
-		System.out.print(" " + squares.get(2)[2].numberOnBoard);
+		System.out.print(" " + squares[6].numberOnBoard + "  | ");
+		System.out.print(" " + squares[7].numberOnBoard + "  | ");
+		System.out.print(" " + squares[8].numberOnBoard);
 		System.out.println();
-		System.out.print("Your Move: ");
+		System.out.println("Your Move: ");
 	}
 }
 

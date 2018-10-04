@@ -6,6 +6,9 @@ public class Game
 	private final int Rows = 3;
 	private final int Colums = 3;
 	private Scanner sc = new Scanner(System.in);
+	final String playerAI = "O";
+	final String playerHuman = "X";
+	int userInput;
 	Board board;
 
 	public static void main(String[] args)
@@ -15,13 +18,14 @@ public class Game
 
 	void run()
 	{
-		board = new Board(Rows, Colums);
+		board = new Board();
 		board.setupBoard();
-		board.printBoard();
-		//board.setupCells();
-		//board.printToConsole();
-
-		//Get the user's move
-		int humansInput = sc.nextInt();
+		for (int k = 0; k < 9; k++)
+		{
+			board.printBoard();
+			//Get the user's move
+			userInput = sc.nextInt();
+			board.move(userInput,playerHuman);
+		}
 	}
 }

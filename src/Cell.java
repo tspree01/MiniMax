@@ -1,10 +1,10 @@
-public class Cell {
+class Cell {
 	int row;
 	int column;
-	int numberOnBoard;
+	String numberOnBoard;
 	boolean spaceIsEmpty;
 
-	public Cell(int row, int column, int numberOnBoard, boolean spaceIsEmpty) {
+	Cell(int row, int column, String numberOnBoard, boolean spaceIsEmpty) {
 		this.row = row;
 		this.column = column;
 		this.numberOnBoard = numberOnBoard;

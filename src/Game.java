@@ -3,28 +3,67 @@ import java.util.Scanner;
 
 public class Game
 {
-	private final int Rows = 3;
-	private final int Colums = 3;
 	private Scanner sc = new Scanner(System.in);
-	private Board board;
-	Board actuallyBoard;
 	private boolean computerHasWon = false;
 	private boolean playerHasWon = false;
 
 	public static void main(String[] args)
 	{
-		new Game().run();
+		Game game = new Game();
+		int input = game.displayMenu();
+		if(input == 1)
+		{
+			game.ticTacToe();
+		}
+		else if(input == 2){
+			game.globalThermalNuclearWar();
+		}
+		else {
+			System.out.println("Please pick either Tic-tac-toe or Global Thermal Nuclear War");
+			input = game.displayMenu();
+			if(input == 1)
+			{
+				game.ticTacToe();
+			}
+			else if(input == 2){
+				game.globalThermalNuclearWar();
+			}
+		}
 	}
 
-	void run()
+	private void globalThermalNuclearWar(){
+		Random r = new Random();
+		for (int i = 0; i < 100 ; i++)
+		{
+			System.out.print(Integer.toBinaryString(r.nextInt()) + Integer.toBinaryString(r.nextInt()) + Integer.toBinaryString(r.nextInt()) + Integer.toBinaryString(r.nextInt()) +Integer.toBinaryString(r.nextInt()) + Integer.toBinaryString(r.nextInt()) + Integer.toBinaryString(r.nextInt()) + Integer.toBinaryString(r.nextInt()));
+			System.out.println();
+		}
+
+		System.out.println();
+		System.out.println("I'm sorry their appears to be an error with Global Thermal Nuclear War error code (0x87df2ee7)");
+
+		System.out.println("Lets play Tic-tac-toe instead");
+		System.out.println();
+
+		new Game().ticTacToe();
+	}
+
+	private int displayMenu(){
+		System.out.println("What game would you like to play? ");
+		System.out.println("1) Tic-tac-toe.");
+		System.out.println("2) Global Thermal Nuclear War.");
+		System.out.print("Choice: ");
+		return sc.nextInt();
+	}
+	private void ticTacToe()
 	{
 		int[] bestMove;
-		board = new Board();
+		Board board = new Board();
 		//board.setupBoard(board.cells);
 
 		while (true)
 		{
-			if (! currentPlayerWon(board.cells))
+			if (!currentPlayerWon(board.cells))
 			{
 				//board.printBoard(board.cells);
 				board.printBoard(board.cells);
@@ -34,13 +73,17 @@ public class Game
 				int userInput = sc.nextInt();
 				String playerHuman = "X";
 				board.move(userInput, playerHuman, board.cells);
-				if(!currentPlayerWon(board.cells))
+				if(! board.numberOfAvailableCells(board.cells).isEmpty())
 				{
 					String playerAI = "O";
 					bestMove = board.minimax(0, board, playerAI, false);
 					// best move[1] isnt getting the cell that bestmove[1] points too like index 1 can be cell 3 of available moves
 					board.move(bestMove[1], playerAI, board.cells);
 					System.out.println();
+				}
+				else{
+					System.out.println("Draw");
+					break;
 				}
 
 				//board.move(userInput, playerHuman, actuallyBoard.cells);
@@ -65,6 +108,8 @@ public class Game
 			}
 		}
 	}
+
+
 
 	// Check to see if the AI has won
 	private boolean currentPlayerWon(Cell[] board)

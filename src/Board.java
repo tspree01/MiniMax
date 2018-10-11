@@ -1,11 +1,6 @@
-import javax.print.DocFlavor;
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Vector;
 
-public class Board
+class Board
 {
 	Cell[] cells;
 
@@ -19,7 +14,7 @@ public class Board
 	}
 
 	//copy constructor
-	public Board(Board board)
+	private Board(Board board)
 	{
 		this.cells = new Cell[9];
 		for (int i = 0; i < this.cells.length; i++)
@@ -70,7 +65,7 @@ public class Board
 		//board[8].spaceIsEmpty = false;
 	}
 
-	int[] minimax(int depth, Board board, String currentPlayer, boolean maximizePlayer)
+	int[] minimax(int depth, Board board, String currentPlayer)
 	{
 		ArrayList<Cell> availableMoves = this.numberOfAvailableCells(board.cells);
 		// Check to see if its a tie, win, or lose
@@ -94,32 +89,32 @@ public class Board
 		}
 
 			ArrayList<int[]> scores = new ArrayList<>();
-			for (int i = 0; i < availableMoves.size(); i++)
+		for (Cell availableMove : availableMoves)
+		{
+			// check to see if its the AI's turn
+			if (currentPlayer.equals("O"))
 			{
-				// check to see if its the AI's turn
-				if (currentPlayer.equals("O"))
-				{
-					Board newBoard = new Board(board);
-					//	if (newBoard.cells[Integer.parseInt(availableMoves.get(i).numberOnBoard) - 1].spaceIsEmpty)
-					//{
-					newBoard.move(Integer.parseInt(availableMoves.get(i).numberOnBoard), currentPlayer, newBoard.cells);
+				Board newBoard = new Board(board);
+				//	if (newBoard.cells[Integer.parseInt(availableMoves.get(i).numberOnBoard) - 1].spaceIsEmpty)
+				//{
+				newBoard.move(Integer.parseInt(availableMove.numberOnBoard), currentPlayer, newBoard.cells);
 
-					String playerHuman = "X";
-					scores.add(minimax(depth + 1, newBoard, playerHuman, true));
-					//}
-				}
-				else
-				{
-					Board newBoard = new Board(board);
-					//if (newBoard.cells[Integer.parseInt(availableMoves.get(i).numberOnBoard) - 1].spaceIsEmpty)
-
-					//{
-					newBoard.move(Integer.parseInt(availableMoves.get(i).numberOnBoard), currentPlayer, newBoard.cells);
-					String playerAI = "O";
-					scores.add(minimax(depth + 1, newBoard, playerAI, false));
-					//}
-				}
+				String playerHuman = "X";
+				scores.add(minimax(depth + 1, newBoard, playerHuman));
+				//}
 			}
+			else
+			{
+				Board newBoard = new Board(board);
+				//if (newBoard.cells[Integer.parseInt(availableMoves.get(i).numberOnBoard) - 1].spaceIsEmpty)
+
+				//{
+				newBoard.move(Integer.parseInt(availableMove.numberOnBoard), currentPlayer, newBoard.cells);
+				String playerAI = "O";
+				scores.add(minimax(depth + 1, newBoard, playerAI));
+				//}
+			}
+		}
 
 		if (currentPlayer.equals("O"))
 		{
@@ -133,7 +128,7 @@ public class Board
 					maxIndex = i;
 				}
 			}
-			return new int[]{maxScore, maxIndex = Integer.parseInt(availableMoves.get(maxIndex).numberOnBoard)};
+			return new int[]{maxScore, Integer.parseInt(availableMoves.get(maxIndex).numberOnBoard)};
 		}
 		else
 		{
@@ -147,7 +142,7 @@ public class Board
 					minIndex = i;
 				}
 			}
-			return new int[]{minScore, minIndex = Integer.parseInt(availableMoves.get(minIndex).numberOnBoard)};
+			return new int[]{minScore, Integer.parseInt(availableMoves.get(minIndex).numberOnBoard)};
 		}
 	}
 

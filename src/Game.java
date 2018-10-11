@@ -76,7 +76,7 @@ public class Game
 				if(! board.numberOfAvailableCells(board.cells).isEmpty())
 				{
 					String playerAI = "O";
-					bestMove = board.minimax(0, board, playerAI, false);
+					bestMove = board.minimax(0, board, playerAI);
 					// best move[1] isnt getting the cell that bestmove[1] points too like index 1 can be cell 3 of available moves
 					board.move(bestMove[1], playerAI, board.cells);
 					System.out.println();
@@ -120,7 +120,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		//Middle Across
@@ -128,7 +127,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Bottom Across
@@ -136,7 +134,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		//Middle Down
@@ -144,7 +141,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Right Down
@@ -152,7 +148,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Left Down
@@ -160,7 +155,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		//Top Left to Bottom Right
@@ -168,7 +162,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Top Right to Bottom Left
@@ -176,7 +169,6 @@ public class Game
 		{
 			computerHasWon = true;
 			playerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Top Across
@@ -184,7 +176,6 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		//Middle Across
@@ -192,7 +183,6 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Bottom Across
@@ -200,7 +190,6 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		//Middle Down
@@ -208,7 +197,6 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Right Down
@@ -216,7 +204,6 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Left Down
@@ -224,7 +211,6 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		//Top Left to Bottom Right
@@ -232,7 +218,6 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		// Top Right to Bottom Left
@@ -240,12 +225,10 @@ public class Game
 		{
 			playerHasWon = true;
 			computerHasWon = false;
-			draw = false;
 			return true;
 		}
 		else
 		{
-			draw = true;
 			computerHasWon = false;
 			playerHasWon = false;
 			return false;

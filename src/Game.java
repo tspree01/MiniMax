@@ -37,7 +37,7 @@ public class Game
 				if(!currentPlayerWon(board.cells))
 				{
 					String playerAI = "O";
-					bestMove = board.minimax(0, board, playerAI, true);
+					bestMove = board.minimax(0, board, playerAI, false);
 					// best move[1] isnt getting the cell that bestmove[1] points too like index 1 can be cell 3 of available moves
 					board.move(bestMove[1], playerAI, board.cells);
 					System.out.println();

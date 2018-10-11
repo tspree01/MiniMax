@@ -6,14 +6,10 @@ public class Game
 	private final int Rows = 3;
 	private final int Colums = 3;
 	private Scanner sc = new Scanner(System.in);
-	final String playerAI = "O";
-	final String playerHuman = "X";
-	int userInput;
-	Board board;
+	private Board board;
 	Board actuallyBoard;
-	boolean computerHasWon = false;
-	boolean draw = false;
-	boolean playerHasWon = false;
+	private boolean computerHasWon = false;
+	private boolean playerHasWon = false;
 
 	public static void main(String[] args)
 	{
@@ -25,42 +21,48 @@ public class Game
 		int[] bestMove;
 		board = new Board();
 		//board.setupBoard(board.cells);
-		//actuallyBoard = new Board();
 
 		while (true)
 		{
-			if(!currentPlayerWon(board.cells))
+			if (! currentPlayerWon(board.cells))
 			{
 				//board.printBoard(board.cells);
 				board.printBoard(board.cells);
 				System.out.print("Your Move: ");
+
 				//Get the user's move
-					userInput = sc.nextInt();
-					board.move(userInput, playerHuman, board.cells);
-					if(!currentPlayerWon(board.cells))
-					{
-							bestMove = board.minimax(0, board, playerAI);
-							// best move[1] isnt getting the cell that bestmove[1] points too like index 1 can be cell 3 of available moves
-							board.move(bestMove[1], playerAI, board.cells);
-							System.out.println();
-					}
+				int userInput = sc.nextInt();
+				String playerHuman = "X";
+				board.move(userInput, playerHuman, board.cells);
+				if(!currentPlayerWon(board.cells))
+				{
+					String playerAI = "O";
+					bestMove = board.minimax(0, board, playerAI, true);
+					// best move[1] isnt getting the cell that bestmove[1] points too like index 1 can be cell 3 of available moves
+					board.move(bestMove[1], playerAI, board.cells);
+					System.out.println();
+				}
 
 				//board.move(userInput, playerHuman, actuallyBoard.cells);
 			}
-			else {
+			else
+			{
 				board.printBoard(board.cells);
-				if (computerHasWon){
+				if (computerHasWon)
+				{
 					System.out.println("AI Won");
 				}
-				else if(playerHasWon){
-					System.out.println("Player Won");
+				else if (playerHasWon)
+				{
+					System.out.println("Human Won");
+					System.out.println("Wait what Human Won. Wow! im an idiot!");
 				}
-				else {
+				else
+				{
 					System.out.println("Draw");
 				}
 				break;
 			}
-
 		}
 	}
 
@@ -68,6 +70,7 @@ public class Game
 	private boolean currentPlayerWon(Cell[] board)
 	{
 		// Top Across
+		boolean draw = false;
 		if (board[0].numberOnBoard.equals("O") && board[1].numberOnBoard.equals("O") && board[2].numberOnBoard.equals("O"))
 		{
 			computerHasWon = true;
@@ -188,14 +191,15 @@ public class Game
 			return true;
 		}
 		// Top Right to Bottom Left
-		else if(board[2].numberOnBoard.equals("X") && board[4].numberOnBoard.equals("X") && board[6].numberOnBoard.equals("X"))
+		else if (board[2].numberOnBoard.equals("X") && board[4].numberOnBoard.equals("X") && board[6].numberOnBoard.equals("X"))
 		{
 			playerHasWon = true;
 			computerHasWon = false;
 			draw = false;
 			return true;
 		}
-		else {
+		else
+		{
 			draw = true;
 			computerHasWon = false;
 			playerHasWon = false;

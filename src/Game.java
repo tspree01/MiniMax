@@ -76,12 +76,13 @@ public class Game
 				if(! board.numberOfAvailableCells(board.cells).isEmpty())
 				{
 					String playerAI = "O";
-					bestMove = board.minimax(0, board, playerAI);
+					bestMove = board.minimax(0, board, playerAI,false, Integer.MIN_VALUE, Integer.MAX_VALUE);
 					// best move[1] isnt getting the cell that bestmove[1] points too like index 1 can be cell 3 of available moves
 					board.move(bestMove[1], playerAI, board.cells);
 					System.out.println();
 				}
 				else{
+					System.out.println(board.numberOfMoves);
 					System.out.println("Draw");
 					break;
 				}
@@ -91,6 +92,7 @@ public class Game
 			else
 			{
 				board.printBoard(board.cells);
+				System.out.println(board.numberOfMoves);
 				if (computerHasWon)
 				{
 					System.out.println("AI Won");

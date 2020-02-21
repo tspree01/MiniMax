@@ -2,8 +2,13 @@ import java.util.ArrayList;
 
 class Board
 {
+	private Board prev;
 	Cell[] cells;
-	int numberOfMoves = 0;
+	int alphaBetaPruningNumberOfMoves = 0;
+	int miniMaxNumberOfMoves = 0;
+	private boolean Break = false;
+	private int alpha = 0;
+	private int beta = 0;
 
 	Board()
 	{
@@ -18,6 +23,7 @@ class Board
 	private Board(Board board)
 	{
 		this.cells = new Cell[9];
+		this.prev = board.prev;
 		for (int i = 0; i < this.cells.length; i++)
 		{
 			this.cells[i] = new Cell(String.valueOf(board.cells[i].numberOnBoard), board.cells[i].spaceIsEmpty);
@@ -66,7 +72,16 @@ class Board
 		//board[8].spaceIsEmpty = false;
 	}
 
-	int[] minimax(int depth, Board board, String currentPlayer, boolean maximizePlayer, int alpha, int beta)
+	String getTurn(String currentPlayer){
+		if(currentPlayer.equals("O")){
+			return "X";
+		}
+		else{
+			return "O";
+		}
+	}
+
+	int[] alphabeta(int depth, Board board, String currentPlayer, int alpha, int beta)
 	{
 		ArrayList<Cell> availableMoves = this.numberOfAvailableCells(board.cells);
 		int maxIndex = 0;
@@ -76,105 +91,122 @@ class Board
 		if (this.aiHasWon(board.cells))
 		{
 			//printBoard(board.cells);
-			//int[1] = score
-			//int[2] = index of best move
-			//int[3] = alpha
-			//int[4] = beta
-			return new int[]{10 - depth, 387565234, Integer.MIN_VALUE, Integer.MAX_VALUE};
+			//System.out.println(depth);
+			//numberOfMoves++;
+			return new int[]{10 - depth, 387565234};
 		}
 		// Lose
 		else if (this.playerHasWon(board.cells))
 		{
 			//printBoard(board.cells);
-			return new int[]{depth - 10, 35234, Integer.MIN_VALUE, Integer.MAX_VALUE};
+			//System.out.println(depth);
+			//numberOfMoves++;
+
+			return new int[]{depth - 10, 35234};
 		}
 		// Tie
 		else if (availableMoves.isEmpty())
 		{
 			//printBoard(board.cells);
-			return new int[]{0, 3875234, Integer.MIN_VALUE, Integer.MAX_VALUE};
+			//System.out.println(depth);
+			//numberOfMoves++;
+
+			return new int[]{0, 3875234};
 		}
 
-			ArrayList<int[]> scores = new ArrayList<>();
-
-		if(maximizePlayer)
+		ArrayList<int[]> scores = new ArrayList<>();
+		for (int i = 0; i < availableMoves.size(); i++)
 		{
-			int[] score = new int[2];
-			for (int i = 0; i < availableMoves.size(); i++)
-			{
-				// check to see if its the AI's turn
-				//if (currentPlayer.equals("O"))
-				//{
-					Board newBoard = new Board(board);
-					//	if (newBoard.cells[Integer.parseInt(availableMoves.get(i).numberOnBoard) - 1].spaceIsEmpty)
-					//{
-					newBoard.move(Integer.parseInt(availableMoves.get(i).numberOnBoard), currentPlayer, newBoard.cells);
-					numberOfMoves++;
+			// check to see if its the AI's turn
 
-					String playerHuman = "X";
-					score = minimax(depth + 1, newBoard, playerHuman, false, alpha, beta);
-
-					if(score[0] > alpha){
-						alpha = score[0];
-						maxIndex = i;
-					}
-
-					if (alpha >= beta)
-					{
-						break;
-					}
-					//}
-				//}
-/*				else
-				{
-					Board newBoard = new Board(board);
-					//if (newBoard.cells[Integer.parseInt(availableMoves.get(i).numberOnBoard) - 1].spaceIsEmpty)
-
-					//{
-					newBoard.move(Integer.parseInt(availableMove.numberOnBoard), currentPlayer, newBoard.cells);
-					String playerAI = "O";
-					scores.add(minimax(depth + 1, newBoard, playerAI, true, alpha, beta));
-					if (alpha >= beta)
-					{
-						break;
-					}
-					//}
-				}*/
-			}
-
-		}
-		else{
-			int[] score = new int[2];
-			for (int i = 0; i < availableMoves.size(); i++)
-			{
 				Board newBoard = new Board(board);
-				//if (newBoard.cells[Integer.parseInt(availableMoves.get(i).numberOnBoard) - 1].spaceIsEmpty)
-
-				//{
 				newBoard.move(Integer.parseInt(availableMoves.get(i).numberOnBoard), currentPlayer, newBoard.cells);
-				numberOfMoves++;
-
-				String playerAI = "O";
-				score = minimax(depth + 1, newBoard, playerAI, true, alpha, beta);
-
+				alphaBetaPruningNumberOfMoves++;
+				String playerHuman = "X";
+				int[] score = alphabeta(depth + 1, newBoard, newBoard.getTurn(currentPlayer), alpha, beta);
+			if (currentPlayer.equals("O"))
+			{
+				if(score[0] > alpha){
+					alpha = score[0];
+					maxIndex = i;
+				}
+				if (alpha >= beta)
+				{
+					break;
+				}
+			}
+			else
+			{
 				if(score[0] < beta){
 					beta = score[0];
 					minIndex = i;
 				}
-
 				if (alpha >= beta)
 				{
 					break;
 				}
 			}
 		}
-		if(maximizePlayer){
-			return new int[]{alpha, Integer.parseInt(availableMoves.get(maxIndex).numberOnBoard)};
 
-		}else{
+		if (currentPlayer.equals("O"))
+		{
+			return new int[]{alpha, Integer.parseInt(availableMoves.get(maxIndex).numberOnBoard)};
+		}
+		else
+		{
 			return new int[]{beta, Integer.parseInt(availableMoves.get(minIndex).numberOnBoard)};
 		}
-/*		if (currentPlayer.equals("O"))
+	}
+
+	int[] minimax(int depth, Board board, String currentPlayer)
+	{
+		ArrayList<Cell> availableMoves = this.numberOfAvailableCells(board.cells);
+		// Check to see if its a tie, win, or lose
+		// Win
+		if (this.aiHasWon(board.cells))
+		{
+			//printBoard(board.cells);
+			//numberOfMoves++;
+			return new int[]{10 - depth, 387565234};
+		}
+		// Lose
+		else if (this.playerHasWon(board.cells))
+		{
+			//printBoard(board.cells);
+			//numberOfMoves++;
+			return new int[]{depth - 10, 35234};
+		}
+		// Tie
+		else if (availableMoves.isEmpty())
+		{
+			//printBoard(board.cells);
+			//numberOfMoves++;
+			return new int[]{0, 3875234};
+		}
+
+		ArrayList<int[]> scores = new ArrayList<>();
+		for (Cell availableMove : availableMoves)
+		{
+			// check to see if its the AI's turn
+			if (currentPlayer.equals("O"))
+			{
+				Board newBoard = new Board(board);
+				newBoard.move(Integer.parseInt(availableMove.numberOnBoard), currentPlayer, newBoard.cells);
+				miniMaxNumberOfMoves++;
+				String playerHuman = "X";
+				scores.add(minimax(depth + 1, newBoard, playerHuman));
+			}
+			else
+			{
+				Board newBoard = new Board(board);
+				newBoard.move(Integer.parseInt(availableMove.numberOnBoard), currentPlayer, newBoard.cells);
+				miniMaxNumberOfMoves++;
+				String playerAI = "O";
+				scores.add(minimax(depth + 1, newBoard, playerAI));
+			}
+		}
+
+		if (currentPlayer.equals("O"))
 		{
 			int maxScore = -10000;
 			int maxIndex = 0;
@@ -185,12 +217,8 @@ class Board
 					maxScore = scores.get(i)[0];
 					maxIndex = i;
 				}
-				if(scores.get(i)[0] > alpha){
-					alpha = scores.get(i)[0];
-					maxIndex = i;
-				}
 			}
-			return new int[]{maxScore, Integer.parseInt(availableMoves.get(maxIndex).numberOnBoard), alpha, beta};
+			return new int[]{maxScore, Integer.parseInt(availableMoves.get(maxIndex).numberOnBoard)};
 		}
 		else
 		{
@@ -203,14 +231,11 @@ class Board
 					minScore = scores.get(i)[0];
 					minIndex = i;
 				}
-				if(scores.get(i)[0] < beta){
-					beta = scores.get(i)[0];
-					minIndex = i;
-				}
 			}
-			return new int[]{minScore, Integer.parseInt(availableMoves.get(minIndex).numberOnBoard), alpha, beta};
-		}*/
+			return new int[]{minScore, Integer.parseInt(availableMoves.get(minIndex).numberOnBoard)};
+		}
 	}
+
 
 	// Check to see if the AI has won
 	private boolean aiHasWon(Cell[] board)
